@@ -1,0 +1,66 @@
+button {
+    height: 40px;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+}
+
+#calculator {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    width: 25%;
+}
+
+#number-display {
+    border-style: solid;
+    font-size: 32px;
+    text-align: right;
+    padding: 8px;
+    background-color: lightgrey;
+}
+
+#calc-btns {
+    display: flex;
+    justify-content: stretch;
+}
+
+#left-btns {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    flex-grow: 1;
+}
+
+#utility-btns{
+    display:flex;
+}
+
+#clear-btn {
+    flex-grow: 1;
+}
+
+#number-btns {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#number-btns button {
+    flex-basis: 33%;
+    flex-grow:1;
+}
+
+#btn-point {
+    margin-left: auto;
+}
+
+#right-btns {
+    flex-grow: 1;
+}
+
+#function-btns {
+    display: flex;
+    flex-direction: column;
+}
