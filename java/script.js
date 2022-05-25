@@ -13,3 +13,24 @@ function divide (a, b) {
 function operate (func, a, b) {
     return func(a, b);
 }
+
+const numberDisplay = document.querySelector(`#number-display`);
+let currentNumber = numberDisplay.innerHTML;
+
+//This function populates the display when user clicks the number buttons
+const numberButtonsContainer = document.querySelector(`#number-btns`);
+numberButtonsContainer.addEventListener(`click`, (event) => {
+    const isButton = event.target.nodeName === 'BUTTON';
+    if (!isButton) { //rejects if user hits the container div instead of a button
+        return;
+    }
+    if (currentNumber == 0) { //prevents displaying numbers like 04 or 073. No 0 bullcrap
+        currentNumber = event.target.innerText;
+    } else if (currentNumber.length > 9) {
+        currentNumber = currentNumber; //there's got to be a better way to do this
+    } else {
+    currentNumber += event.target.innerText;
+    }
+    numberDisplay.innerHTML = currentNumber;
+});
+
