@@ -26,8 +26,8 @@ numberButtonsContainer.addEventListener(`click`, (event) => {
     }
     if (currentNumber == 0) { //prevents displaying numbers like 04 or 073. No 0 bullcrap
         currentNumber = event.target.innerText;
-    } else if (currentNumber.length > 9) {
-        currentNumber = currentNumber; //there's got to be a better way to do this
+    } else if (currentNumber.length > 9 || currentNumber.includes(`.`) && event.target.innerText == `.`) {  //prevents extra long number + number like 34.24.24
+        currentNumber = currentNumber; //fix this
     } else {
     currentNumber += event.target.innerText;
     }
