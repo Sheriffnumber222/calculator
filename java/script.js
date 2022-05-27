@@ -11,15 +11,15 @@ function divide (a, b) {
     return a / b;
 }
 function operate (func, a, b) {
-    if (a == undefined) {
+    if (a == undefined) { //prevents operating with an empty value
         return b;
     } 
     return func(a, b);
 }
 
 const numberDisplay = document.querySelector(`#number-display`);
-let currentNumber = numberDisplay.innerHTML;
-let hiddenNumber = undefined;
+let numberDisplayed = numberDisplay.innerHTML;
+let numberHidden = undefined;
 let currentFunc = undefined;
 
 //This function populates the display when user clicks the number buttons
@@ -29,32 +29,34 @@ numberButtonsContainer.addEventListener(`click`, (event) => {
     if (!isButton) { //rejects if user hits the container div instead of a button
         return;
     }
-    if (currentNumber == 0) { //prevents displaying numbers like 04 or 073. No 0 bullcrap
-        currentNumber = event.target.innerText;
-    } else if (currentNumber.length > 9 || currentNumber.includes(`.`) && event.target.innerText == `.`) {  
-        currentNumber = currentNumber; //prevents extra long number + number like 34.24.24
+    if (numberDisplayed == 0) { //prevents displaying numbers like 04 or 073. No 0 bullcrap
+        numberDisplayed = event.target.innerText;
+    } else if (numberDisplayed.length > 9 || numberDisplayed.includes(`.`) && event.target.innerText == `.`) {  
+        numberDisplayed = numberDisplayed; //prevents extra long numbers + number like 34.24.24
     } else {
-    currentNumber += event.target.innerText;
+    numberDisplayed += event.target.innerText;
     }
-    numberDisplay.innerHTML = currentNumber;
+    numberDisplay.innerHTML = numberDisplayed;
 });
 
+/* Using a hidden number, we'll calculate user inputs in the background whenever they
+hit an operation symbol*/
 const functionButtonsContainer = document.querySelector(`#function-btns`);
 functionButtonsContainer.addEventListener(`click`, (event) => {
     const isButton = event.target.nodeName === 'BUTTON';
     if (!isButton) {
         return;
     }
-    hiddenNumber = operate(currentFunc, hiddenNumber, Number(currentNumber));
-
+    numberHidden = operate(currentFunc, numberHidden, Number(numberDisplayed));
     const currentFuncString = event.target.id.substring(4);
     currentFunc = window[currentFuncString]; // This sets up the NEXT operation
-    currentNumber = 0;
+    numberDisplayed = 0;
 });
 
+/* This calculates the current hidden values and puts it on display and resets the hidden number*/
 const equalsButton = document.querySelector(`#btn-equals`);
 equalsButton.addEventListener(`click`, (event) => {
-    currentNumber = operate(currentFunc, hiddenNumber, Number(currentNumber));
-    hiddenNumber = undefined;
-    numberDisplay.innerHTML = currentNumber;
+    numberDisplayed = operate(currentFunc, numberHidden, Number(numberDisplayed));
+    numberHidden = undefined;
+    numberDisplay.innerHTML = numberDisplayed;
 });
