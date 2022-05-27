@@ -16,6 +16,10 @@ function operate (func, a, b) {
     } 
     return func(a, b);
 }
+function round (number, places) {
+    placesCalc = 10 ** places;
+    return Math.round(number * placesCalc) / placesCalc;
+}
 
 const numberDisplay = document.querySelector(`#number-display`);
 let numberDisplayed = numberDisplay.innerHTML;
@@ -47,16 +51,17 @@ functionButtonsContainer.addEventListener(`click`, (event) => {
     if (!isButton) {
         return;
     }
-    numberHidden = operate(currentFunc, numberHidden, Number(numberDisplayed));
+    numberHidden = round(operate(currentFunc, numberHidden, Number(numberDisplayed)), 5);
     const currentFuncString = event.target.id.substring(4);
     currentFunc = window[currentFuncString]; // This sets up the NEXT operation
     numberDisplayed = 0;
+    numberDisplay.innerHTML = numberHidden;
 });
 
 /* This calculates the current hidden values and puts it on display and resets the hidden number*/
 const equalsButton = document.querySelector(`#btn-equals`);
 equalsButton.addEventListener(`click`, (event) => {
-    numberDisplayed = operate(currentFunc, numberHidden, Number(numberDisplayed));
+    numberDisplayed = round(operate(currentFunc, numberHidden, Number(numberDisplayed)), 5);
     numberHidden = undefined;
     numberDisplay.innerHTML = numberDisplayed;
 });
