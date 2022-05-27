@@ -11,11 +11,16 @@ function divide (a, b) {
     return a / b;
 }
 function operate (func, a, b) {
+    if (a == undefined) {
+        return b;
+    } 
     return func(a, b);
 }
 
 const numberDisplay = document.querySelector(`#number-display`);
 let currentNumber = numberDisplay.innerHTML;
+let hiddenNumber = undefined;
+let currentFunc = undefined;
 
 //This function populates the display when user clicks the number buttons
 const numberButtonsContainer = document.querySelector(`#number-btns`);
@@ -34,3 +39,24 @@ numberButtonsContainer.addEventListener(`click`, (event) => {
     numberDisplay.innerHTML = currentNumber;
 });
 
+const functionButtonsContainer = document.querySelector(`#function-btns`);
+functionButtonsContainer.addEventListener(`click`, (event) => {
+    const isButton = event.target.nodeName === 'BUTTON';
+    if (!isButton) {
+        return;
+    }
+    const currentFuncString = event.target.id.substring(4);
+    currentFunc = window[currentFuncString]; // Window makes string a working function
+    
+    hiddenNumber = operate(currentFunc, hiddenNumber, Number(currentNumber));
+    currentNumber = 0;
+    console.log(hiddenNumber);
+});
+
+const equalsButton = document.querySelector(`#btn-equals`);
+equalsButton.addEventListener(`click`, (event) => {
+    currentNumber = operate(currentFunc, hiddenNumber, Number(currentNumber));
+    hiddenNumber = undefined;
+    numberDisplay.innerHTML = currentNumber;
+    console.log(currentNumber);
+});
