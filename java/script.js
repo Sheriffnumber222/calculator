@@ -31,8 +31,8 @@ numberButtonsContainer.addEventListener(`click`, (event) => {
     }
     if (currentNumber == 0) { //prevents displaying numbers like 04 or 073. No 0 bullcrap
         currentNumber = event.target.innerText;
-    } else if (currentNumber.length > 9 || currentNumber.includes(`.`) && event.target.innerText == `.`) {  //prevents extra long number + number like 34.24.24
-        currentNumber = currentNumber; //fix this
+    } else if (currentNumber.length > 9 || currentNumber.includes(`.`) && event.target.innerText == `.`) {  
+        currentNumber = currentNumber; //prevents extra long number + number like 34.24.24
     } else {
     currentNumber += event.target.innerText;
     }
@@ -45,12 +45,11 @@ functionButtonsContainer.addEventListener(`click`, (event) => {
     if (!isButton) {
         return;
     }
-    const currentFuncString = event.target.id.substring(4);
-    currentFunc = window[currentFuncString]; // Window makes string a working function
-    
     hiddenNumber = operate(currentFunc, hiddenNumber, Number(currentNumber));
+
+    const currentFuncString = event.target.id.substring(4);
+    currentFunc = window[currentFuncString]; // This sets up the NEXT operation
     currentNumber = 0;
-    console.log(hiddenNumber);
 });
 
 const equalsButton = document.querySelector(`#btn-equals`);
@@ -58,5 +57,4 @@ equalsButton.addEventListener(`click`, (event) => {
     currentNumber = operate(currentFunc, hiddenNumber, Number(currentNumber));
     hiddenNumber = undefined;
     numberDisplay.innerHTML = currentNumber;
-    console.log(currentNumber);
 });
