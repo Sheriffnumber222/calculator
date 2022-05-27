@@ -8,6 +8,10 @@ function multiply (a, b) {
     return a * b;
 }
 function divide (a, b) {
+    if (b == 0) {
+        alert(`Can't divide by zero!`);
+        return a;
+    }
     return a / b;
 }
 function operate (func, a, b) {
@@ -22,8 +26,8 @@ function round (number, places) {
 }
 
 const numberDisplay = document.querySelector(`#number-display`);
-let numberDisplayed = numberDisplay.innerHTML;
-let numberHidden = undefined;
+let numberNew = numberDisplay.innerHTML;
+let numberOld = undefined;
 let currentFunc = undefined;
 
 //This function populates the display when user clicks the number buttons
@@ -33,14 +37,14 @@ numberButtonsContainer.addEventListener(`click`, (event) => {
     if (!isButton) { //rejects if user hits the container div instead of a button
         return;
     }
-    if (numberDisplayed == 0) { //prevents displaying numbers like 04 or 073. No 0 bullcrap
-        numberDisplayed = event.target.innerText;
-    } else if (numberDisplayed.length > 9 || numberDisplayed.includes(`.`) && event.target.innerText == `.`) {  
-        numberDisplayed = numberDisplayed; //prevents extra long numbers + number like 34.24.24
+    if (numberNew == 0) { //prevents displaying numbers like 04 or 073. No 0 bullcrap
+        numberNew = event.target.innerText;
+    } else if (numberNew.length > 9 || numberNew.includes(`.`) && event.target.innerText == `.`) {  
+        numberNew = numberNew; //prevents extra long numbers + number like 34.24.24
     } else {
-    numberDisplayed += event.target.innerText;
+    numberNew += event.target.innerText;
     }
-    numberDisplay.innerHTML = numberDisplayed;
+    numberDisplay.innerHTML = numberNew;
 });
 
 /* Using a hidden number, we'll calculate user inputs in the background whenever they
@@ -51,17 +55,24 @@ functionButtonsContainer.addEventListener(`click`, (event) => {
     if (!isButton) {
         return;
     }
-    numberHidden = round(operate(currentFunc, numberHidden, Number(numberDisplayed)), 5);
+    numberOld = round(operate(currentFunc, numberOld, Number(numberNew)), 5);
     const currentFuncString = event.target.id.substring(4);
     currentFunc = window[currentFuncString]; // This sets up the NEXT operation
-    numberDisplayed = 0;
-    numberDisplay.innerHTML = numberHidden;
+    numberNew = 0;
+    numberDisplay.innerHTML = numberOld;
 });
 
 /* This calculates the current hidden values and puts it on display and resets the hidden number*/
 const equalsButton = document.querySelector(`#btn-equals`);
 equalsButton.addEventListener(`click`, (event) => {
-    numberDisplayed = round(operate(currentFunc, numberHidden, Number(numberDisplayed)), 5);
-    numberHidden = undefined;
-    numberDisplay.innerHTML = numberDisplayed;
+    numberNew = round(operate(currentFunc, numberOld, Number(numberNew)), 5);
+    numberOld = undefined;
+    numberDisplay.innerHTML = numberNew;
+});
+
+const clearButton = document.querySelector(`#clear-btn`);
+clearButton.addEventListener(`click`, (event) => {
+    numberNew = 0;
+    numberOld = undefined;
+    numberDisplay.innerHTML = numberNew;
 });
